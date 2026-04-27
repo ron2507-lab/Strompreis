@@ -122,7 +122,7 @@ jobs:
                   continue  # nur heute und morgen speichern
               existing = {}
               for slot in db.get(day_str, []):
-                  existing[(slot['hour'], slot['minute'])] = slot['raw']
+                  existing[(slot['hour'], slot.get('minute', 0))] = slot['raw']
               # Neue Werte hinzufügen (vorhandene behalten)
               existing.update(new_slots)
               # Sortiert als Liste speichern
