@@ -54,9 +54,10 @@ jobs:
                   with urllib.request.urlopen(req, timeout=20) as r:
                       xml_text = r.read().decode('utf-8')
 
-                  # XML parsen
-                  ns = {'ns': 'urn:iec62325.351:tc57wg16:451-3:publicationdocument:7:0'}
+                  # XML parsen — Namespace dynamisch aus Root-Element lesen
                   root = ET.fromstring(xml_text)
+                  ns_uri = root.tag.split('}')[0].lstrip('{') if '}' in root.tag else 'urn:iec62325.351:tc57wg16:451-3:publicationdocument:7:3'
+                  ns = {'ns': ns_uri}
 
                   for ts in root.findall('.//ns:TimeSeries', ns):
                       resolution = ts.findtext('.//ns:resolution', namespaces=ns) or 'PT60M'
